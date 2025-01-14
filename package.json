@@ -9,7 +9,15 @@
     "start": "react-native start",
     "test": "jest"
   },
-  "dependencies": {
+  "codegenConfig": {
+    "name": "NativeLocalStorageSpec",
+    "type": "all",
+    "jsSrcsDir": "specs",
+    "android": {
+      "javaPackageName": "com.opentokreactnative"
+    }
+  },
+ "dependencies": {
     "react": "18.3.1",
     "react-native": "0.76.6"
   },
