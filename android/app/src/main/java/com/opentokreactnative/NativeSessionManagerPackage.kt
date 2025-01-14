@@ -6,20 +6,20 @@ import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 
-class NativeLocalStoragePackage : TurboReactPackage() {
+class NativeSessionManagerPackage : TurboReactPackage() {
 
   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? =
-    if (name == NativeLocalStorageModule.NAME) {
-      NativeLocalStorageModule(reactContext)
+    if (name == NativeSessionManagerModule.NAME) {
+      NativeSessionManagerModule(reactContext)
     } else {
       null
     }
 
   override fun getReactModuleInfoProvider() = ReactModuleInfoProvider {
     mapOf(
-      NativeLocalStorageModule.NAME to ReactModuleInfo(
-        _name = NativeLocalStorageModule.NAME,
-        _className = NativeLocalStorageModule.NAME,
+      NativeSessionManagerModule.NAME to ReactModuleInfo(
+        _name = NativeSessionManagerModule.NAME,
+        _className = NativeSessionManagerModule.NAME,
         _canOverrideExistingModule = false,
         _needsEagerInit = false,
         isCxxModule = false,

@@ -5,7 +5,7 @@ import {
   Text,
 } from 'react-native';
 
-import NativeLocalStorage from './specs/NativeLocalStorage';
+import NativeSessionManager from './specs/NativeSessionManager';
 
 function App(): React.JSX.Element {
   const apiKey = '472032';
@@ -16,26 +16,26 @@ function App(): React.JSX.Element {
 
   React.useEffect(() => {
     initSession();
-    NativeLocalStorage.onStreamCreated((event: StreamEvent) => {
+    NativeSessionManager.onStreamCreated((event: StreamEvent) => {
       console.log('onStreamCreated', event);
       setStreamId(event.streamId);
     });
-    NativeLocalStorage.onStreamDestroyed((event: StreamEvent) => {
+    NativeSessionManager.onStreamDestroyed((event: StreamEvent) => {
       console.log('onStreamCreated', event);
     });
-    NativeLocalStorage.onSignalReceived((event: SignalEvent) => {
+    NativeSessionManager.onSignalReceived((event: SignalEvent) => {
       console.log('onSignalReceived', event);
     });
   }, []);
 
   async function initSession() {
-    NativeLocalStorage.onSessionConnected((event: SessionConnectEvent) => {
+    NativeSessionManager.onSessionConnected((event: SessionConnectEvent) => {
       console.log('onSessionConnected', event);
-      NativeLocalStorage?.sendSignal(sessionId, 'greeting', 'hello from' + event.connectionId);
+      NativeSessionManager?.sendSignal(sessionId, 'greeting', 'hello from' + event.connectionId);
     });
 
-    NativeLocalStorage?.initSession(apiKey, sessionId, {});
-    await NativeLocalStorage?.connect(sessionId, token);
+    NativeSessionManager?.initSession(apiKey, sessionId, {});
+    await NativeSessionManager?.connect(sessionId, token);
       // .then(() => )
     console.log('connect() called');
   }

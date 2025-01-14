@@ -10,7 +10,7 @@
     "test": "jest"
   },
   "codegenConfig": {
-    "name": "NativeLocalStorageSpec",
+    "name": "NativeSessionManagerSpec",
     "type": "all",
     "jsSrcsDir": "specs",
     "android": {

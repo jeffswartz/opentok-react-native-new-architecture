@@ -2,7 +2,7 @@ package com.opentokreactnative
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.opentokreactnative.NativeLocalStorageSpec
+import com.opentokreactnative.NativeSessionManagerSpec
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap;
@@ -14,7 +14,7 @@ import com.opentok.android.Session.SessionListener
 import com.opentok.android.Session.SignalListener
 import com.opentok.android.Stream
 
-class NativeLocalStorageModule(reactContext: ReactApplicationContext) : NativeLocalStorageSpec(reactContext), SessionListener, SignalListener {
+class NativeSessionManagerModule(reactContext: ReactApplicationContext) : NativeSessionManagerSpec(reactContext), SessionListener, SignalListener {
   private lateinit var session: Session
   private var context = reactContext
 
@@ -97,7 +97,7 @@ class NativeLocalStorageModule(reactContext: ReactApplicationContext) : NativeLo
   }
 
   companion object {
-    const val NAME = "NativeLocalStorage"
+    const val NAME = "NativeSessionManager"
   }
 }
 
