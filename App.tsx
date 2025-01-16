@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import NativeSessionManager from './specs/NativeSessionManager';
-import SubscriberView from './specs/SubscriberViewComponent';
 
 function App(): React.JSX.Element {
   const apiKey = '472032';
@@ -47,14 +46,9 @@ function App(): React.JSX.Element {
         Session ID: {sessionId}
       </Text>
       {streamId &&
-      <SubscriberView
-          streamId={streamId}
-          sessionId={sessionId}
-          style={styles.webview}
-          onSubscriberConnected={(event) => {
-            console.log('onSubscriberConnected', event.nativeEvent);
-          }}
-      />
+      <Text style={styles.text}>
+        Stream ID: {streamId}
+      </Text>
       }
     </SafeAreaView>
   );

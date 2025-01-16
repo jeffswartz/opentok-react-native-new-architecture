@@ -12,7 +12,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.opentokreactnative.NativeSessionManagerPackage
-import com.opentokreactnative.SubscriberViewPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -23,7 +22,6 @@ class MainApplication : Application(), ReactApplication {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
               add(NativeSessionManagerPackage())
-              add(SubscriberViewPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
