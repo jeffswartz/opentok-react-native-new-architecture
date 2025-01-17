@@ -11,7 +11,7 @@ import OTNativeSubscriberView from './specs/WebViewNativeComponent';
 function App(): React.JSX.Element {
   const apiKey = '472032';
   const sessionId = '1_MX40NzIwMzJ-fjE3MzM0NTAzOTcyNjh-L0FQMkR0K2tVc214ajJOVzZiYWtYclg1fn5-';
-  const token = 'T1==cGFydG5lcl9pZD00NzIwMzImc2lnPTQ4YzFiYjUyOWYzM2FiYTUxZTJkYjE5NmY5ODVmN2U2ZDdlZWU3YzY6c2Vzc2lvbl9pZD0xX01YNDBOekl3TXpKLWZqRTNNek0wTlRBek9UY3lOamgtTDBGUU1rUjBLMnRWYzIxNGFqSk9WelppWVd0WWNsZzFmbjUtJmNyZWF0ZV90aW1lPTE3MzYyNzkyOTEmbm9uY2U9MC4yMTI0Nzc0NzA1NTc3Mzc5JnJvbGU9bW9kZXJhdG9yJmV4cGlyZV90aW1lPTE3Mzg4NzEyOTA1NTcmaW5pdGlhbF9sYXlvdXRfY2xhc3NfbGlzdD0=';
+  const token = 'T1==cGFydG5lcl9pZD00NzIwMzImc2lnPWM2MjU2ZTFlYmQ5OWYyMjcxZDAyMDBlMjVlZDI0MTBiNzIzOWQ3OTg6c2Vzc2lvbl9pZD0xX01YNDBOekl3TXpKLWZqRTNNek0wTlRBek9UY3lOamgtTDBGUU1rUjBLMnRWYzIxNGFqSk9WelppWVd0WWNsZzFmbjUtJmNyZWF0ZV90aW1lPTE3MzcxNDQ2NzEmbm9uY2U9MC4wMTgxNjYxMzQxNjM1NDI2MjQmcm9sZT1tb2RlcmF0b3ImZXhwaXJlX3RpbWU9MTczOTczNjY3MDc5OSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==';
 
   const [streamId, setStreamId] = React.useState<string | null>(null);
 
@@ -26,6 +26,10 @@ function App(): React.JSX.Element {
     });
     NativeSessionManager.onSignalReceived((event: SignalEvent) => {
       console.log('onSignalReceived', event);
+    });
+
+    NativeSessionManager.onSessionError((event: ErrorEvent) => {
+      console.log('onError', event);
     });
   }, []);
 
@@ -44,7 +48,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text style={styles.text}>
-        Session ID: {sessionId}
+        Session ID: {token}
       </Text>
       {streamId &&
       <OTNativeSubscriberView
