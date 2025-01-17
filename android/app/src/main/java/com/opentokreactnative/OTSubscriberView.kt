@@ -17,7 +17,7 @@ import com.opentok.android.Subscriber
 import com.opentok.android.SubscriberKit
 import com.opentok.android.SubscriberKit.SubscriberListener
 
-class ReactWebView: FrameLayout, SubscriberListener {
+class OTSubscriberView: FrameLayout, SubscriberListener {
   private lateinit var session: Session
   private lateinit var stream: Stream
   private var sessionId: String?= ""

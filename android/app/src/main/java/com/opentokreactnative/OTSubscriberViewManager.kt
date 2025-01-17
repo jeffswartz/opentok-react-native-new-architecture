@@ -9,24 +9,24 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.viewmanagers.OTNativeSubscriberViewManagerInterface;
 import com.facebook.react.viewmanagers.OTNativeSubscriberViewManagerDelegate;
 
-@ReactModule(name = ReactWebViewManager.REACT_CLASS)
-class ReactWebViewManager(context: ReactApplicationContext) : SimpleViewManager<ReactWebView>(), OTNativeSubscriberViewManagerInterface<ReactWebView> {
-  private val delegate: OTNativeSubscriberViewManagerDelegate<ReactWebView, ReactWebViewManager> =
+@ReactModule(name = OTSubscriberViewManager.REACT_CLASS)
+class OTSubscriberViewManager(context: ReactApplicationContext) : SimpleViewManager<OTSubscriberView>(), OTNativeSubscriberViewManagerInterface<OTSubscriberView> {
+  private val delegate: OTNativeSubscriberViewManagerDelegate<OTSubscriberView, OTSubscriberViewManager> =
     OTNativeSubscriberViewManagerDelegate(this)
 
-  override fun getDelegate(): ViewManagerDelegate<ReactWebView> = delegate
+  override fun getDelegate(): ViewManagerDelegate<OTSubscriberView> = delegate
 
   override fun getName(): String = REACT_CLASS
 
-  override fun createViewInstance(context: ThemedReactContext): ReactWebView = ReactWebView(context)
+  override fun createViewInstance(context: ThemedReactContext): OTSubscriberView = OTSubscriberView(context)
 
   @ReactProp(name = "streamId")
-  override public fun setStreamId(view: ReactWebView, streamId: String?) {
+  override public fun setStreamId(view: OTSubscriberView, streamId: String?) {
     view.setStreamId(streamId)
   }
 
   @ReactProp(name = "sessionId")
-  override public fun setSessionId(view: ReactWebView, sessionId: String?) {
+  override public fun setSessionId(view: OTSubscriberView, sessionId: String?) {
     view.setSessionId(sessionId)
   }
 
