@@ -82,7 +82,14 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
   }
 
   override fun onError(session: Session, opentokError: OpentokError) {
-      //
+      val payload =
+        Arguments.createMap().apply {
+          putString("sessionId", session.sessionId)
+          // Fix this (toString() issue):
+          putString("code", "opentokError.getCode().toString()")
+          putString("message", opentokError.message)
+        }
+      emitOnSessionError(payload)
   }
 
   override fun onSignalReceived(session: Session, type: String, data: String, connection: Connection) {

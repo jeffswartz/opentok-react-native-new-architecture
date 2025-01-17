@@ -27,6 +27,10 @@ function App(): React.JSX.Element {
     NativeSessionManager.onSignalReceived((event: SignalEvent) => {
       console.log('onSignalReceived', event);
     });
+
+    NativeSessionManager.onSessionError((event: ErrorEvent) => {
+      console.log('onError', event);
+    });
   }, []);
 
   async function initSession() {
@@ -44,7 +48,7 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text style={styles.text}>
-        Session ID: {sessionId}
+        Session ID: {token}
       </Text>
       {streamId &&
       <Text>foo</Text>
