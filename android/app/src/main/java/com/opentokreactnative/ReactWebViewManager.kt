@@ -6,13 +6,13 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewManagerDelegate;
 import com.facebook.react.uimanager.annotations.ReactProp;
-import com.facebook.react.viewmanagers.CustomWebViewManagerInterface;
-import com.facebook.react.viewmanagers.CustomWebViewManagerDelegate;
+import com.facebook.react.viewmanagers.OTNativeSubscriberViewManagerInterface;
+import com.facebook.react.viewmanagers.OTNativeSubscriberViewManagerDelegate;
 
 @ReactModule(name = ReactWebViewManager.REACT_CLASS)
-class ReactWebViewManager(context: ReactApplicationContext) : SimpleViewManager<ReactWebView>(), CustomWebViewManagerInterface<ReactWebView> {
-  private val delegate: CustomWebViewManagerDelegate<ReactWebView, ReactWebViewManager> =
-    CustomWebViewManagerDelegate(this)
+class ReactWebViewManager(context: ReactApplicationContext) : SimpleViewManager<ReactWebView>(), OTNativeSubscriberViewManagerInterface<ReactWebView> {
+  private val delegate: OTNativeSubscriberViewManagerDelegate<ReactWebView, ReactWebViewManager> =
+    OTNativeSubscriberViewManagerDelegate(this)
 
   override fun getDelegate(): ViewManagerDelegate<ReactWebView> = delegate
 
@@ -31,7 +31,7 @@ class ReactWebViewManager(context: ReactApplicationContext) : SimpleViewManager<
   }
 
   companion object {
-    const val REACT_CLASS = "CustomWebView"
+    const val REACT_CLASS = "OTNativeSubscriberView"
   }
 
   override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any> =

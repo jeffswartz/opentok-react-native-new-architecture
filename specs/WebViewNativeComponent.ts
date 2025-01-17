@@ -21,5 +21,5 @@ export interface NativeProps extends ViewProps {
 }
 
 export default codegenNativeComponent<NativeProps>(
-  'CustomWebView',
+  'OTNativeSubscriberView',
 ) as HostComponent<NativeProps>;
