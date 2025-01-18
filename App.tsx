@@ -53,9 +53,6 @@ function App(): React.JSX.Element {
       <Text style={styles.text}>
         Session ID: {sessionId}
       </Text>
-      {streamIds &&
-        <Text>foo {streamIds.length} {streamIds.toString()}</Text>
-      }
       {streamIds?.map((streamId) => <OTNativeSubscriberView
           streamId={streamId}
           sessionId={sessionId}
