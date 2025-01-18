@@ -17,6 +17,7 @@ import com.opentok.android.Stream
 class NativeSessionManagerModule(reactContext: ReactApplicationContext) : NativeSessionManagerSpec(reactContext), SessionListener, SignalListener {
   private lateinit var session: Session
   private var context = reactContext
+  private var sharedState = OTRN.getSharedState();
 
   override fun getName() = NAME
 
@@ -26,10 +27,9 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
     session = Session.Builder(context, apiKey, sessionId)
                 .build()
 
-    OTRN.putSession(session);
+    sharedState.getSessions().put(sessionId, session);
 
     session.setSessionListener(this)
-    // session.connect(token)
   }
 
   override fun connect(sessionId: String, token: String, promise: Promise) {
@@ -65,7 +65,7 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
   }
 
   override fun onStreamReceived(session: Session, stream: Stream) {
-      OTRN.putStream(stream);
+      sharedState.getSubscriberStreams().put(stream.streamId, stream);
       val payload =
         Arguments.createMap().apply {
           putString("streamId", stream.streamId)

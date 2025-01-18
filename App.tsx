@@ -13,14 +13,10 @@ function App(): React.JSX.Element {
   const sessionId = '1_MX40NzIwMzJ-fjE3MzM0NTAzOTcyNjh-L0FQMkR0K2tVc214ajJOVzZiYWtYclg1fn5-';
   const token = 'T1==cGFydG5lcl9pZD00NzIwMzImc2lnPWM2MjU2ZTFlYmQ5OWYyMjcxZDAyMDBlMjVlZDI0MTBiNzIzOWQ3OTg6c2Vzc2lvbl9pZD0xX01YNDBOekl3TXpKLWZqRTNNek0wTlRBek9UY3lOamgtTDBGUU1rUjBLMnRWYzIxNGFqSk9WelppWVd0WWNsZzFmbjUtJmNyZWF0ZV90aW1lPTE3MzcxNDQ2NzEmbm9uY2U9MC4wMTgxNjYxMzQxNjM1NDI2MjQmcm9sZT1tb2RlcmF0b3ImZXhwaXJlX3RpbWU9MTczOTczNjY3MDc5OSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==';
 
-  const [streamId, setStreamId] = React.useState<string | null>(null);
+  const [streamIds, setStreamIds] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     initSession();
-    NativeSessionManager.onStreamCreated((event: StreamEvent) => {
-      console.log('onStreamCreated', event);
-      setStreamId(event.streamId);
-    });
     NativeSessionManager.onStreamDestroyed((event: StreamEvent) => {
       console.log('onStreamCreated', event);
     });
@@ -32,6 +28,13 @@ function App(): React.JSX.Element {
       console.log('onError', event);
     });
   }, []);
+
+  React.useEffect(() => {
+    NativeSessionManager.onStreamCreated((event: StreamEvent) => {
+      console.log('onStreamCreated', event);
+      setStreamIds(prevIds => [...prevIds, event.streamId]);
+    });
+  }, [streamIds]);
 
   async function initSession() {
     NativeSessionManager.onSessionConnected((event: SessionConnectEvent) => {
@@ -48,17 +51,17 @@ function App(): React.JSX.Element {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text style={styles.text}>
-        Session ID: {token}
+        Session ID: {sessionId}
       </Text>
-      {streamId &&
-      <OTNativeSubscriberView
+      {streamIds?.map((streamId) => <OTNativeSubscriberView
           streamId={streamId}
           sessionId={sessionId}
+          key={streamId}
           style={styles.webview}
           onSubscriberConnected={(event) => {
             console.log('onSubscriberConnected', event.nativeEvent);
           }}
-      />
+        />)
       }
     </SafeAreaView>
   );
@@ -79,9 +82,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   webview: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'orange',
+    width: '50%',
+    height: '50%',
     borderColor: 'red',
     borderWidth: 1,
   },

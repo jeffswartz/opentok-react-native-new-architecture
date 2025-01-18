@@ -18,11 +18,12 @@ import com.opentok.android.SubscriberKit
 import com.opentok.android.SubscriberKit.SubscriberListener
 
 class OTSubscriberView: FrameLayout, SubscriberListener {
-  private lateinit var session: Session
-  private lateinit var stream: Stream
+  private var session: Session? = null
+  private var stream: Stream? = null
   private var sessionId: String?= ""
   private var streamId: String?= ""
   private var subscriber: Subscriber? = null
+  private var sharedState = OTRN.getSharedState();
 
   constructor(context: Context) : super(context) {
     configureComponent(context)
@@ -37,10 +38,11 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
   }
 
   override fun onAttachedToWindow() {
-    session = OTRN.getSess()
-    stream = OTRN.getStr()
+    session = sharedState.getSessions().get(sessionId)
+    stream = sharedState.getSubscriberStreams().get(streamId)
     super.onAttachedToWindow()
-    subscribeToStream(session, stream)
+    subscribeToStream(session ?: return, stream ?: return)
+    
   }
 
   private fun configureComponent(context: Context) {
@@ -95,7 +97,7 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
   override fun onConnected(subscriber: SubscriberKit) {
       val payload =
         Arguments.createMap().apply {
-          putString("streamId", stream.streamId)
+          putString("streamId", stream!!.streamId)
         }
       emitOpenTokEvent("onSubscriberConnected", payload)
   }
