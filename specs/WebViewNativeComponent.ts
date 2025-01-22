@@ -14,6 +14,7 @@ type StreamErrorEvent = {
 export interface NativeProps extends ViewProps {
     sessionId: string;
     streamId: string;
+    subscribeToAudio?: boolean;
     subscribeToVideo?: boolean;
     onSubscriberConnected?: BubblingEventHandler<StreamEvent> | null;
     onStreamDestroyed?: BubblingEventHandler<StreamEvent> | null;

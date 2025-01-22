@@ -31,6 +31,11 @@ class OTSubscriberViewManager(context: ReactApplicationContext) : SimpleViewMana
   }
 
 
+  @ReactProp(name = "subscribeToAudio")
+  override public fun setSubscribeToAudio(view: OTSubscriberView, value: Boolean) {
+    view.setSubscribeToAudio(value)
+  }
+
   @ReactProp(name = "subscribeToVideo")
   override public fun setSubscribeToVideo(view: OTSubscriberView, value: Boolean) {
     view.setSubscribeToVideo(value)
