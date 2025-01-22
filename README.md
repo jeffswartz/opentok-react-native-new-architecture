@@ -41,6 +41,14 @@ yarn android
 
 You may want to connect to the session in [Playground](https://tokbox.com/developer/tools/playground) and publish a stream from there.
 
+## Code walk-through
+
+The specs directory includes the TypeScript spec defining the API.
+
+The package.json file includes a `codegenConfig` property that CodeGen uses to build the Turbo module (NativeSessionManagerModule) and the Fabric native module (OTSubscriberView).
+
+The Android source code is in the android/src directory.
+
 ## Known issues
 
 * The app currently only supports basic subscribing and sending signals.
