@@ -14,8 +14,10 @@ function App(): React.JSX.Element {
   const token = 'T1==cGFydG5lcl9pZD00NzIwMzImc2lnPWM2MjU2ZTFlYmQ5OWYyMjcxZDAyMDBlMjVlZDI0MTBiNzIzOWQ3OTg6c2Vzc2lvbl9pZD0xX01YNDBOekl3TXpKLWZqRTNNek0wTlRBek9UY3lOamgtTDBGUU1rUjBLMnRWYzIxNGFqSk9WelppWVd0WWNsZzFmbjUtJmNyZWF0ZV90aW1lPTE3MzcxNDQ2NzEmbm9uY2U9MC4wMTgxNjYxMzQxNjM1NDI2MjQmcm9sZT1tb2RlcmF0b3ImZXhwaXJlX3RpbWU9MTczOTczNjY3MDc5OSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==';
 
   const [streamIds, setStreamIds] = React.useState<string[]>([]);
-  const [subscribeToAudio, setSubscribeToAudio] = React.useState<boolean>(false);
   const [subscribeToVideo, setSubscribeToVideo] = React.useState<boolean>(true);
+  const toggleVideo = () => {
+    setSubscribeToVideo(val => !val);
+  };
 
   React.useEffect(() => {
     initSession();
@@ -32,6 +34,10 @@ function App(): React.JSX.Element {
     NativeSessionManager.onSessionError((event: ErrorEvent) => {
       console.log('onError', event);
     });
+
+    setInterval(() => {
+      toggleVideo();
+    }, 2000);
   }, []);
 
   React.useEffect(() => {
@@ -39,15 +45,7 @@ function App(): React.JSX.Element {
       console.log('onStreamCreated', event);
       setStreamIds(prevIds => [...prevIds, event.streamId]);
     });
-  }, [streamIds, subscribeToVideo]);
-
-  React.useEffect(() => {
-    setInterval(() => {
-      setSubscribeToVideo(!subscribeToVideo);
-      setSubscribeToAudio(!subscribeToAudio);
-      console.log('subscribeToVideo', subscribeToVideo);
-    }, 2000);
-  }, [subscribeToAudio, subscribeToVideo]);
+  }, [streamIds]);
 
   async function initSession() {
     NativeSessionManager.onSessionConnected((event: SessionConnectEvent) => {
@@ -71,6 +69,7 @@ function App(): React.JSX.Element {
           sessionId={sessionId}
           key={streamId}
           subscribeToVideo={subscribeToVideo}
+          subscribeToAudio={!subscribeToVideo}
           style={styles.webview}
           onSubscriberConnected={(event) => {
             console.log('onSubscriberConnected', event.nativeEvent);
