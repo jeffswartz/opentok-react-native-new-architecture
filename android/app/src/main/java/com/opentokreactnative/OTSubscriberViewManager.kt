@@ -30,6 +30,17 @@ class OTSubscriberViewManager(context: ReactApplicationContext) : SimpleViewMana
     view.setSessionId(sessionId)
   }
 
+
+  @ReactProp(name = "subscribeToAudio")
+  override public fun setSubscribeToAudio(view: OTSubscriberView, value: Boolean) {
+    view.setSubscribeToAudio(value)
+  }
+
+  @ReactProp(name = "subscribeToVideo")
+  override public fun setSubscribeToVideo(view: OTSubscriberView, value: Boolean) {
+    view.setSubscribeToVideo(value)
+  }
+
   companion object {
     const val REACT_CLASS = "OTNativeSubscriberView"
   }

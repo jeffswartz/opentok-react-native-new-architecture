@@ -22,6 +22,8 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
   private var stream: Stream? = null
   private var sessionId: String?= ""
   private var streamId: String?= ""
+  private var subscribeToAudio = true
+  private var subscribeToVideo = true
   private var subscriber: Subscriber? = null
   private var sharedState = OTRN.getSharedState();
 
@@ -42,7 +44,6 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
     stream = sharedState.getSubscriberStreams().get(streamId)
     super.onAttachedToWindow()
     subscribeToStream(session ?: return, stream ?: return)
-    
   }
 
   private fun configureComponent(context: Context) {
@@ -64,6 +65,16 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
     sessionId = str
   }
 
+  public fun setSubscribeToAudio(value: Boolean) {
+    subscribeToAudio = value
+    subscriber?.setSubscribeToAudio(value)
+  }
+
+  public fun setSubscribeToVideo(value: Boolean) {
+    subscribeToVideo = value
+    subscriber?.setSubscribeToVideo(value)
+  }
+
   public fun setStreamId(str: String?) {
     streamId = str
   }
@@ -75,6 +86,8 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
         BaseVideoRenderer.STYLE_VIDEO_FILL
     )
     subscriber?.setSubscriberListener(this)
+    subscriber?.setSubscribeToAudio(subscribeToAudio)
+    subscriber?.setSubscribeToVideo(subscribeToVideo)
     // FrameLayout mubscriberViewContainer = FrameLayout(context);
 
     session.subscribe(subscriber)
