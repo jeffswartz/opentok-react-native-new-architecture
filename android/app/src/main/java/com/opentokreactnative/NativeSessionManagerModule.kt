@@ -30,6 +30,7 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
     sharedState.getSessions().put(sessionId, session);
 
     session.setSessionListener(this)
+    session.setSignalListener(this)
   }
 
   override fun connect(sessionId: String, token: String, promise: Promise) {
