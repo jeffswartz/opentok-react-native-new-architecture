@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   Text,
 } from 'react-native';
 
-import NativeSessionManager from './specs/NativeSessionManager';
 import OTNativeSubscriberView from './specs/WebViewNativeComponent';
+import OTSession from './src/OTSession';
 
 function App(): React.JSX.Element {
   const apiKey = '472032';
@@ -15,67 +15,67 @@ function App(): React.JSX.Element {
 
   const [streamIds, setStreamIds] = React.useState<string[]>([]);
   const [subscribeToVideo, setSubscribeToVideo] = React.useState<boolean>(true);
+
+  const sessionRef = useRef<OTSession>(null);
   const toggleVideo = () => {
     setSubscribeToVideo(val => !val);
   };
 
   React.useEffect(() => {
-    initSession();
-    NativeSessionManager.onStreamCreated((event: StreamEvent) => {
-      console.log('onStreamCreated', event);
-    });
-    NativeSessionManager.onStreamDestroyed((event: StreamEvent) => {
-      console.log('onStreamDestroyed', event);
-    });
-    NativeSessionManager.onSignalReceived((event: SignalEvent) => {
-      console.log('onSignalReceived', event);
-    });
-
-    NativeSessionManager.onSessionError((event: ErrorEvent) => {
-      console.log('onError', event);
-    });
-
     setInterval(() => {
       toggleVideo();
     }, 2000);
   }, []);
-
-  React.useEffect(() => {
-    NativeSessionManager.onStreamCreated((event: StreamEvent) => {
-      console.log('onStreamCreated', event);
-      setStreamIds(prevIds => [...prevIds, event.streamId]);
-    });
-  }, [streamIds]);
-
-  async function initSession() {
-    NativeSessionManager.onSessionConnected((event: SessionConnectEvent) => {
-      console.log('onSessionConnected', event);
-      NativeSessionManager?.sendSignal(sessionId, 'greeting', 'hello from' + event.connectionId);
-    });
-
-    NativeSessionManager?.initSession(apiKey, sessionId, {});
-    await NativeSessionManager?.connect(sessionId, token);
-      // .then(() => )
-    console.log('connect() called');
-  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <Text style={styles.text}>
         SubscribeToVideo: {subscribeToVideo.toString()}
       </Text>
-      {streamIds?.map((streamId) => <OTNativeSubscriberView
-          streamId={streamId}
-          sessionId={sessionId}
-          key={streamId}
-          subscribeToVideo={subscribeToVideo}
-          subscribeToAudio={!subscribeToVideo}
-          style={styles.webview}
-          onSubscriberConnected={(event) => {
-            console.log('onSubscriberConnected', event.nativeEvent);
-          }}
-        />)
-      }
+      <OTSession
+        apiKey={apiKey}
+        token={token}
+        sessionId={sessionId}
+        ref={sessionRef}
+        eventHandlers={{
+          sessionConnected: (event:any) => {
+            console.log('sessionConnected', event);
+            sessionRef.current?.signal({
+              type: 'greeting2',
+              data: 'hello again from React Native'
+            });
+        },
+          streamCreated: (event:any) => {
+            console.log('streamCreated', event);
+            setStreamIds(prevIds => [...prevIds, event.streamId]);
+          },
+          streamDestroyed: (event:any) => console.log('streamDestroyed', event),
+          signal: (event:any) => console.log('signal event', event),
+          error: (event:any) => console.log('error event', event),
+        }}
+        signal={{
+          type: 'greeting2',
+          data: 'initial signal from React Native'
+        }}
+        style={styles.session}
+      >
+        {streamIds?.map((streamId) => <OTNativeSubscriberView
+            streamId={streamId}
+            sessionId={sessionId}
+            key={streamId}
+            subscribeToVideo={subscribeToVideo}
+            subscribeToAudio={!subscribeToVideo}
+            style={styles.webview}
+            onSubscriberConnected={(event) => {
+              console.log('onSubscriberConnected', event.nativeEvent);
+            }}
+          />)
+        }
+        </OTSession>
+      <Text style={styles.text}>
+        Stream count: {streamIds.length.toString()}
+      </Text>
+
     </SafeAreaView>
   );
 }
@@ -100,6 +100,9 @@ const styles = StyleSheet.create({
     borderColor: 'red',
     borderWidth: 1,
   },
+  session: {
+    display: "flex"
+  }
 });
 
 export default App;
