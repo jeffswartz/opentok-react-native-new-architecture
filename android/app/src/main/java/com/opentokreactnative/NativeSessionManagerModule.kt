@@ -94,8 +94,7 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
       val payload =
         Arguments.createMap().apply {
           putString("sessionId", session.sessionId)
-          // Fix this (toString() issue):
-          putString("code", "opentokError.getCode().toString()")
+          putString("code", opentokError.errorCode.toString())
           putString("message", opentokError.message)
         }
       emitOnSessionError(payload)
