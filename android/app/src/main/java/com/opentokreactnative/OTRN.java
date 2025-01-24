@@ -2,6 +2,7 @@ package com.opentokreactnative;
 
 import com.opentok.android.Session;
 import com.opentok.android.Stream;
+import com.opentok.android.Subscriber;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class OTRN {
@@ -10,6 +11,7 @@ public class OTRN {
 
     private ConcurrentHashMap<String, Stream> subscriberStreams = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Session> sessions = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Subscriber> subscribers = new ConcurrentHashMap<>();
 
     public static synchronized OTRN getSharedState() {
 
@@ -28,6 +30,10 @@ public class OTRN {
     public ConcurrentHashMap<String, Session> getSessions() {
 
         return this.sessions;
+    }
+
+    public ConcurrentHashMap<String, Subscriber> getSubscribers() {
+        return this.subscribers;
     }
 
     private OTRN() {}

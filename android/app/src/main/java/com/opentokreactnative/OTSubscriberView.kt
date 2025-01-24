@@ -16,8 +16,9 @@ import com.opentok.android.Stream
 import com.opentok.android.Subscriber
 import com.opentok.android.SubscriberKit
 import com.opentok.android.SubscriberKit.SubscriberListener
+import com.opentok.android.SubscriberKit.SubscriberRtcStatsReportListener
 
-class OTSubscriberView: FrameLayout, SubscriberListener {
+class OTSubscriberView: FrameLayout, SubscriberListener, SubscriberRtcStatsReportListener {
   private var session: Session? = null
   private var stream: Stream? = null
   private var sessionId: String?= ""
@@ -81,11 +82,13 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
 
   fun subscribeToStream(session: Session, stream: Stream) {
     subscriber = Subscriber.Builder(context, stream).build()
+    sharedState.getSubscribers().put(stream.getStreamId(), subscriber?: return);
     subscriber?.setStyle(
         BaseVideoRenderer.STYLE_VIDEO_SCALE,
         BaseVideoRenderer.STYLE_VIDEO_FILL
     )
     subscriber?.setSubscriberListener(this)
+    subscriber?.setRtcStatsReportListener(this)
     subscriber?.setSubscribeToAudio(subscribeToAudio)
     subscriber?.setSubscribeToVideo(subscribeToVideo)
     // FrameLayout mubscriberViewContainer = FrameLayout(context);
@@ -134,6 +137,14 @@ class OTSubscriberView: FrameLayout, SubscriberListener {
         }
       emitOpenTokEvent("onSubscriberError", payload)
     */
+  }
+
+  override fun onRtcStatsReport(subscriber: SubscriberKit, jsonArrayOfReports: String) {
+      val payload =
+        Arguments.createMap().apply {
+          putString("jsonArrayOfReports", jsonArrayOfReports)
+        }
+      emitOpenTokEvent("onRtcStatsReport", payload)
   }
 
   inner class OpenTokEvent(

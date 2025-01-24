@@ -5,8 +5,8 @@ import {
   Text,
 } from 'react-native';
 
-import OTNativeSubscriberView from './specs/WebViewNativeComponent';
 import OTSession from './src/OTSession';
+import OTSubscriberView from './src/OTSubscriberView';
 
 function App(): React.JSX.Element {
   const apiKey = '472032';
@@ -17,6 +17,7 @@ function App(): React.JSX.Element {
   const [subscribeToVideo, setSubscribeToVideo] = React.useState<boolean>(true);
 
   const sessionRef = useRef<OTSession>(null);
+  const subscriberRef = useRef<OTSubscriberView>(null);
   const toggleVideo = () => {
     setSubscribeToVideo(val => !val);
   };
@@ -59,15 +60,23 @@ function App(): React.JSX.Element {
         }}
         style={styles.session}
       >
-        {streamIds?.map((streamId) => <OTNativeSubscriberView
+        {streamIds?.map((streamId) => <OTSubscriberView
             streamId={streamId}
             sessionId={sessionId}
             key={streamId}
             subscribeToVideo={subscribeToVideo}
             subscribeToAudio={!subscribeToVideo}
             style={styles.webview}
-            onSubscriberConnected={(event) => {
-              console.log('onSubscriberConnected', event.nativeEvent);
+            eventHandlers={{
+              subscriberConnected: (event:any) => {
+                console.log('subscriberConnected', event);
+                setTimeout(() => {
+                  subscriberRef.current?.getRtcStatsReport();
+                }, 4000);
+              },
+              onRtcStatsReport: (event:any) => {
+                console.log('onRtcStatsReport', event);
+              },
             }}
           />)
         }
@@ -85,20 +94,9 @@ const styles = StyleSheet.create({
     margin: 10,
     fontSize: 20,
   },
-  textInput: {
-    margin: 10,
-    height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
-    paddingLeft: 5,
-    paddingRight: 5,
-    borderRadius: 5,
-  },
   webview: {
     width: '50%',
     height: '50%',
-    borderColor: 'red',
-    borderWidth: 1,
   },
   session: {
     display: "flex"

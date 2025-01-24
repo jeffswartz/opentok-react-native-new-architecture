@@ -40,6 +40,7 @@ export interface Spec extends TurboModule {
   connect(sessionId: string, token: string): Promise<void>;
   disconnect(sessionId: string): Promise<void>;
   sendSignal(sessionId: string, type: string, data: string): void;
+  getSubscriberRtcStatsReport(): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>(

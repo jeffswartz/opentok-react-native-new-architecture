@@ -47,6 +47,14 @@ class NativeSessionManagerModule(reactContext: ReactApplicationContext) : Native
     session.sendSignal(type, data)
   }
 
+  override fun getSubscriberRtcStatsReport() {
+    val subscribers = sharedState.getSubscribers()
+    val subscriberList = ArrayList(subscribers.values)
+        for (subscriber in subscriberList) {
+            subscriber.getRtcStatsReport();
+        }
+    }
+
   override fun onConnected(session: Session) {
       val payload =
         Arguments.createMap().apply {
