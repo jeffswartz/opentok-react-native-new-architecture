@@ -64,6 +64,7 @@ function App(): React.JSX.Element {
             streamId={streamId}
             sessionId={sessionId}
             key={streamId}
+            ref={subscriberRef}
             subscribeToVideo={subscribeToVideo}
             subscribeToAudio={!subscribeToVideo}
             style={styles.webview}
