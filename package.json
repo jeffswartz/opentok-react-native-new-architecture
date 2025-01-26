@@ -9,15 +9,8 @@
     "start": "react-native start",
     "test": "jest"
   },
-  "codegenConfig": {
-    "name": "NativeSessionManagerSpec",
-    "type": "all",
-    "jsSrcsDir": "specs",
-    "android": {
-      "javaPackageName": "com.opentokreactnative"
-    }
-  },
- "dependencies": {
+  "types": "@types/index.d.ts",
+  "dependencies": {
     "deprecated-react-native-prop-types": "^2.3.0",
     "react": "18.3.1",
     "react-native": "0.76.6",
